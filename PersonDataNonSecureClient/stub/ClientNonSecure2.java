@@ -14,7 +14,7 @@ public class ClientNonSecure {
 
 	public static void main(String[] args) {
 
-		String epr = "http://localhost:8080/PersionDataNonSecure/services/PersonDataService.PersonDataHandlerServiceHttpSoap11Endpoint/";
+		String epr = "http://localhost:8080/PersonDataNonSecure/services/PersonDataService.PersonDataServiceHttpSoap11Endpoint/";
 
 		try {
 			PersonDataServiceStub stub = new PersonDataServiceStub(epr);

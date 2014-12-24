@@ -14,9 +14,9 @@ public class ClientNonSecure {
 
 	public static void main(String[] args) {
 
-		String eprHttp = "http://192.168.1.165:8080/PersionDataNonSecure/services/PersonDataService.PersonDataHandlerServiceHttpSoap11Endpoint/";
-		String eprHttps = "https://192.168.1.165:8443/PersionDataNonSecure/services/PersonDataService.PersonDataHandlerServiceHttpSoap11Endpoint/";
-		String eprPhp = "http://192.168.1.78/php_webservice/tt_webserver.php";
+		String eprHttp = "http://localhost:8080/PersonDataNonSecure/services/PersonDataService.PersonDataServiceHttpSoap11Endpoint/";
+		String eprHttps = "https://localhost:8443/PersonDataNonSecure/services/PersonDataService.PersonDataServiceHttpSoap11Endpoint/";
+		String eprPhp = "http://localhost/php_webservice/tt_webserver.php";
 
 		
 		try {
