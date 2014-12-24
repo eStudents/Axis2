@@ -1,3 +1,12 @@
+# eckipse project files
+*.classpath
+*.project
+*.gitignore
+build.xml
+*.settings
+/build/*
+/WebContent/*
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
