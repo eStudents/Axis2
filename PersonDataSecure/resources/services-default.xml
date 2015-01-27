@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- This file was auto-generated from WSDL --><!-- by the Apache Axis2 version: 1.5.1  Built on : Oct 19, 2009 (10:59:00 EDT) --><serviceGroup>
+    <service name="PersonDataService">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="lk.estudents.schemas.xsd.persondata.PersonDataServiceMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">lk.estudents.schemas.xsd.persondata.PersonDataServiceSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="getPersonData" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://schemas.estudents.lk/xsd/persondata">
+            <actionMapping>urn:getPersonData</actionMapping>
+            <outputActionMapping>http://schemas.estudents.lk/xsd/persondata/PersonDataServicePortType/getPersonDataResponse</outputActionMapping>
+            <faultActionMapping faultName="InvalidIdentificationNumberFault">http://schemas.estudents.lk/xsd/persondata/PersonDataServicePortType/getPersonData/Fault/InvalidIdentificationNumberFault</faultActionMapping>
+        </operation>
+    </service>
+</serviceGroup>

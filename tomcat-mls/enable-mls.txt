@@ -1,0 +1,48 @@
+1. keytool -genkey -alias server -keyalg RSA -keysize 1024 -validity 365 -keystore serverkeystore.jks -keypass serverpassword -storepass serverpassword
+
+C:\Users\rangalal.g>keytool -genkey -alias server -keyalg RSA -keysize 1024 -validity 365 -keystore
+serverkeystore.jks -keypass serverpassword -storepass serverpassword
+What is your first and last name?
+  [Unknown]:  estudents.lk
+What is the name of your organizational unit?
+  [Unknown]:  IT
+What is the name of your organization?
+  [Unknown]:  eStudents
+What is the name of your City or Locality?
+  [Unknown]:  Beliatta
+What is the name of your State or Province?
+  [Unknown]:  Southern
+What is the two-letter country code for this unit?
+  [Unknown]:  LK
+Is CN=estudents.lk, OU=IT, O=eStudents, L=Beliatta, ST=Southern, C=LK correct?
+  [no]:  yes
+
+
+C:\Users\rangalal.g>
+
+2 keytool -genkey -alias client -keyalg RSA -keysize 1024 -validity 365 -keypass clientpassword -keystore clientkeystore.jks -storepass clientpassword
+
+C:\Users\rangalal.g>keytool -genkey -alias client -keyalg RSA -keysize 1024 -validity 365 -keypass c
+lientpassword -keystore clientkeystore.jks -storepass clientpassword
+What is your first and last name?
+  [Unknown]:  Rangalal Gamage
+What is the name of your organizational unit?
+  [Unknown]:  IT
+What is the name of your organization?
+  [Unknown]:  OpenSL
+What is the name of your City or Locality?
+  [Unknown]:  Colombo
+What is the name of your State or Province?
+  [Unknown]:  Western
+What is the two-letter country code for this unit?
+  [Unknown]:  LK
+Is CN=Rangalal Gamage, OU=IT, O=OpenSL, L=Colombo, ST=Western, C=LK correct?
+  [no]:  yes
+
+
+C:\Users\rangalal.g>
+
+3. keytool -alias server -export -keystore serverkeystore.jks -storepass serverpassword -file server.cer
+4. keytool -import -alias server -file server.cer -keystore clientkeystore.jks -storepass clientpassword
+5. keytool -alias client -export -keystore clientkeystore.jks -storepass clientpassword -file client.cer
+6. keytool -import -alias client -file client.cer -keystore serverkeystore.jks -storepass serverpassword

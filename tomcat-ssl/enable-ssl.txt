@@ -1,0 +1,101 @@
+ONE WAY SSL
+1. create keypair for tomcat server
+
+C:\Users\rangalal.g>keytool -genkey -v -alias tomcatserver -keystore tomcatserver.jks -keyalg RSA -validity 3650 -dname "CN=estudents.lk, OU=IT, O=eStudents, L=Beliatta, ST=Southern, C=LK" -storepass
+serverpassword -keypass serverpassword
+Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA) with a validity of 3,650 days
+        for: CN=estudents.lk, OU=IT, O=eStudents, L=Beliatta, ST=Southern, C=LK
+[Storing tomcatserver.jks]
+
+C:\Users\rangalal.g>
+
+2. List keystore contents
+
+C:\Users\rangalal.g>keytool -list -keystore tomcatserver.jks -storepass serverpassword
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+tomcatserver, Dec 31, 2014, PrivateKeyEntry,
+Certificate fingerprint (SHA1): B3:7E:59:BE:77:DD:6E:A8:06:F3:BC:3E:BF:0D:69:7F:65:85:9F:A7
+
+C:\Users\rangalal.g>
+
+3. Define a SSL HTTP/1.1 Connector on port 8443 in server.xml
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11Protocol"
+               maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS" 
+			   keystoreFile="${user.home}/tomcatserver.jks"
+			   keystorePass="serverpassword"/>
+			   
+4. start the tomcat server and type following URL in web browser
+https://localhost:8443/
+
+5.Extract (export) server public key/ certificate from the server keystore (tomcatserver.jks)
+keytool -alias tomcatserver -export -keystore tomcatserver.jks -storepass serverpassword -file tomcatserver.cer
+
+C:\Users\rangalal.g>keytool -alias tomcatserver -export -keystore tomcatserver.jks -storepass serverpassword -file tomcatserver.cer
+Certificate stored in file <tomcatserver.cer>
+
+6. Import the extracted public key from tomcat server keystore (tomcatserver.jks )to client truststore (clienttruststore.jks)
+keytool -import -alias tomcatserver -file tomcatserver.cer -keystore clienttruststore.jks -storepass clientpassword
+
+C:\Users\rangalal.g>keytool -import -alias tomcatserver -file tomcatserver.cer -keystore clienttruststore.jks -storepass clientpassword
+Owner: CN=estudents.lk, OU=IT, O=eStudents, L=Beliatta, ST=Southern, C=LK
+Issuer: CN=estudents.lk, OU=IT, O=eStudents, L=Beliatta, ST=Southern, C=LK
+Serial number: 6173231d
+Valid from: Wed Dec 31 16:16:09 IST 2014 until: Sat Dec 28 16:16:09 IST 2024
+Certificate fingerprints:
+         MD5:  92:96:1A:96:8F:F3:F9:EA:E6:39:43:7C:06:14:8F:A6
+         SHA1: B3:7E:59:BE:77:DD:6E:A8:06:F3:BC:3E:BF:0D:69:7F:65:85:9F:A7
+         SHA256: A0:B2:98:B0:E9:E0:00:BB:21:A5:99:01:4E:7B:5B:65:AF:BA:72:0B:53:07:C8:C2:AA:55:B2:44
+:96:15:88:4E
+         Signature algorithm name: SHA256withRSA
+         Version: 3
+
+Extensions:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: D3 09 A2 83 CD 4D 7A 54   31 2C 83 A2 14 19 51 73  .....MzT1,....Qs
+0010: 2E F6 4A 3E                                        ..J>
+]
+]
+
+Trust this certificate? [no]:  yes
+Certificate was added to keystore
+
+C:\Users\rangalal.g>
+
+TWO WAY SSL
+
+7. To enable two way SSL (to verify clinet also) we have to enbale truststore configuraion in SSL connector and share client certificate with tomcat server.
+8. create keypair for tomcat client
+keytool -genkey -v -alias tomcatclient -keystore tomcatclient.jks -keyalg RSA -validity 3650 -dname "CN=Rangalal, OU=IT, O=NASA, L=Nawala, ST=Western, C=LK" -storepass clientpassword -keypass clientpassword
+
+C:\Users\rangalal.g\tomcat-ssl>keytool -genkey -v -alias tomcatclient -keystore tomcatclient.jks -ke
+yalg RSA -validity 3650 -dname "CN=Rangalal, OU=IT, O=NASA, L=Nawala, ST=Western, C=LK" -storepass clientpassword -keypass clientpassword
+Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA) with a validity of 3,6
+50 days
+        for: CN=Rangalal, OU=IT, O=NASA, L=Nawala, ST=Western, C=LK
+[Storing tomcatclient.jks]
+
+C:\Users\rangalal.g\tomcat-ssl>
+
+9.Extract (export) client public key/certificate from the client keystore (tomcatclient.jks)
+keytool -alias tomcatclient -export -keystore tomcatclient.jks -storepass clientpassword -file tomcatclient.cer
+
+10. Import the extracted public key from tomcat client keystore (tomcatclient.jks )to server truststore (tomcattruststore.jks)
+keytool -import -alias tomcatclient -file tomcatclient.cer -keystore tomcattruststore.jks -storepass serverpassword
+
+11. Update tomcat SSL connector for two way SSL support.
+<Connector port="8444" protocol="org.apache.coyote.http11.Http11Protocol"
+               maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+               clientAuth="true" sslProtocol="TLS" 
+			   keystoreFile="${user.home}/tomcatserver.jks"
+			   keystorePass="serverpassword"
+			   truststoreFile="${user.home}/tomcattruststore.jks"
+			   truststorePass="serverpassword"/>
