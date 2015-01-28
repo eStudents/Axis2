@@ -84,8 +84,7 @@ public class ClientMLSSecure {
 		sigCrypto.setProp(props);
 
 		rampartConfig.setSigCryptoConfig(sigCrypto);
-		rampartConfig.setEncrCryptoConfig(sigCrypto);
-
+		
 		Policy policy = new Policy();
 		policy.addAssertion(rampartConfig);
 
